@@ -5,7 +5,7 @@ import click
 from dotenv import load_dotenv
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
-from collections import Counter, Set
+from collections import Counter
 
 
 # Get a dictionary of (github username, count) pairs with count the amount of comments of that user in pull requests
