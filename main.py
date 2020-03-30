@@ -2,7 +2,6 @@ import csv
 import os
 
 import click
-import numpy as np
 from dotenv import load_dotenv
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
@@ -110,9 +109,10 @@ def getIssueCommentCount(client, repo_name, repo_owner, label):
               required=True)
 @click.option("--label", "-l", multiple=True, prompt="The label to filter on in the pull requests/issues",
               help="The label(s) to filter on in the pull requests/issues", default=[])
-@click.option("--issues", "-i", default=True, prompt="Whether to include issue comments or not",
+@click.option("--issues/--no-issues", "-i/-ni", default=True, prompt="Whether to include issue comments or not",
               help="Whether to include issue comments in the analysis")
-@click.option("--pull_requests", "-p", default=True, "Whether to include pull request comments or not",
+@click.option("--pull_requests/--no-pull_requests", "-p/-np", default=True,
+              prompt="Whether to include pull request comments or not",
               help="Whether to include pull request comments in the analysis")
 def main_method(repo_name, repo_owner, label, issues, pull_requests):
     load_dotenv()
