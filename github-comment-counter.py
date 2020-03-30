@@ -51,6 +51,9 @@ def getPRCommentCount(client, repo_name, repo_owner, label):
     PRcommentAuthorDict = Counter()
     for PR in PRList:
         for comment in PR['node']['comments']['edges']:
+            # Edge case for deleted accounts
+            if comment['node']['author'] is None:
+                continue
             comment_author = comment['node']['author']['login']
             if comment_author not in PRcommentAuthorDict.keys():
                 PRcommentAuthorDict[comment_author] = 1
@@ -94,6 +97,9 @@ def getIssueCommentCount(client, repo_name, repo_owner, label):
     for issue in IssueList:
         comments = issue['node']['comments']['edges']
         for comment in comments:
+            # Edge case for deleted accounts
+            if comment['node']['author'] is None:
+                continue
             comment_author = comment['node']['author']['login']
             if comment_author not in IssueCommentDict.keys():
                 IssueCommentDict[comment_author] = 1
