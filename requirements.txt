@@ -1,2 +1,3 @@
 gql
 python-dotenv
+click
