@@ -23,10 +23,11 @@ if __name__ == "__main__":
         transport=sample_transport,
         fetch_schema_from_transport=True,
     )
-    query = gql('''
+
+    queryString = """
 {
   repository(owner: "numpy", name: "numpy") {
-    pullRequests(states: MERGED, last: 100, labels: "component: numpy.{component}") {
+    pullRequests(states: MERGED, last: 100, labels: "component: numpy.""" + COMPONENT + """") {
       edges {
         node {
           title
@@ -55,10 +56,25 @@ if __name__ == "__main__":
     }
   }
 }
+"""
+    print(queryString)
 
-
-    '''.format(component=COMPONENT))
+    query = gql(queryString)
 
     res = client.execute(query)
 
+    PRDict = res['repository']['pullRequests']['edges']
+
+    commentAuthorDict = {}
+
+    for PR in PRDict:
+        for comment in PR['node']['comments']['edges']:
+            comment_author = comment['node']['author']['login']
+            if comment_author not in commentAuthorDict.keys():
+                commentAuthorDict[comment_author] = 1
+            else:
+                commentAuthorDict[comment_author] += 1
+
     print(res)
+
+    print(commentAuthorDict)
